@@ -27,7 +27,7 @@ public class ex01 {
         resultString.append(String.format("%d ^ %d = ", fileData[0], fileData[1]));
         // Если результат возведения в степень не равен "0", добавляем результат,
         // иначе результат не определен
-        if (result != 0) resultString.append(result);
+        if (result != 0) resultString.append(String.format("%f", result));
         else resultString.append("undefined");
         putResultToFile(String.valueOf(resultString), "src/com/day01/res/output.txt");
     }
@@ -42,7 +42,7 @@ public class ex01 {
 
     public static int @NotNull [] getDataFromFile(String path) {
         int[] fileData = new int[2];
-        try (BufferedReader br = new BufferedReader(new FileReader(path));) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             // Построчно читаем содержимое файла, разделяем по " ", записываем значения в массив
             for (int i = 0; i <= 1; i++) {
                 String[] strArray = br.readLine().split(" ");
@@ -56,7 +56,7 @@ public class ex01 {
     }
 
     public static void putResultToFile(String result, String path) {
-        try (FileWriter writer = new FileWriter(path, true);) {
+        try (FileWriter writer = new FileWriter(path, true)) {
             // Файл открываем с возможностью добавления, записываем результат,
             // добавляем перенос строки
             writer.write(result);
@@ -75,14 +75,9 @@ public class ex01 {
     }
 
     public static double powRecursion(int a, int b) {
-        if (b < 1) return 1;
-        else {
-            if (b / 2 > 1) {
-                double res = powRecursion(a, b / 2);
-                return res * res;
-            }
-            else return powRecursion(a, b-1) * a;
-        }
+        if (b == 0) return 1;
+        double res = powRecursion(a, b / 2);
+        return b % 2 == 0 ? res * res : res * res * a;
     }
 
 }
