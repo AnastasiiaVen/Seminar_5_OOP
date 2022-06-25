@@ -24,18 +24,23 @@ public class ex005 {
     }
 
     public static String getSolution(@NotNull String str) {
+        // Заменяем "?" в выражении нулями, формируем массив (разделитель - пробел)
         String [] strArray = str.replace("?", "0").split(" ");
         int[] numArray = new int[3];
         int j = 0;
+        // Извлекаем из массива типа String числовые значения
         for (String i : strArray) {
             if (isNumeric(i)) {
                 numArray[j] = Integer.parseInt(i);
                 j++;
             }
         }
+        // Находим искомую разницу
         int findInt = numArray[2] - (numArray[0] + numArray[1]);
+        // Если результат отрицательный, решения нет
         if (findInt < 0) return "No solution";
         else {
+            // Иначе формируем строку с ответом
             StringBuilder sb = new StringBuilder();
             if (numArray[0] / 10 > 0) {
                 sb.append(numArray[0] + findInt % 10).append(" + ");
