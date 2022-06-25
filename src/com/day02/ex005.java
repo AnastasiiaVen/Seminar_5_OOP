@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class ex005 {
     public static void main(String[] args) {
@@ -20,48 +22,28 @@ public class ex005 {
         String inputString = getDataFromFile("src/com/day02/res/input.txt");
         System.out.println("Given the equation: " + inputString);
         // Вывод результата
-        System.out.printf("Result: %s", getSolution(inputString));
+        System.out.println(getSolution(inputString));
     }
 
     public static String getSolution(@NotNull String str) {
-        // Заменяем "?" в выражении нулями, формируем массив (разделитель - пробел)
-        String [] strArray = str.replace("?", "0").split(" ");
-        int[] numArray = new int[3];
-        int j = 0;
-        // Извлекаем из массива типа String числовые значения
-        for (String i : strArray) {
-            if (isNumeric(i)) {
-                numArray[j] = Integer.parseInt(i);
-                j++;
+        ArrayList<String> list = new ArrayList<>();
+        // Формируем список. Разделитель - пробел, "+" и "=" исключаем
+        for (String line : str.split(" ")) {
+            if (!Objects.equals(line, "+") && !Objects.equals(line, "=")) list.add(line);
+        }
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                // Заменяем "?" в цикле от 0 до 9, сравниваем с результатом выражения
+                int x = Integer.parseInt(list.get(0).replace("?", String.valueOf(i)));
+                int y = Integer.parseInt(list.get(1).replace("?", String.valueOf(j)));
+                if (x + y == Integer.parseInt(list.get(2))) {
+                    // Решение найдено, формируем строку ответа
+                    return String.format("Result: %d + %d = %d", x, y, Integer.parseInt(list.get(2)));
+                }
             }
         }
-        // Находим искомую разницу
-        int findInt = numArray[2] - (numArray[0] + numArray[1]);
-        // Если результат отрицательный, решения нет
-        if (findInt < 0) return "No solution";
-        else {
-            // Иначе формируем строку с ответом
-            StringBuilder sb = new StringBuilder();
-            if (numArray[0] / 10 > 0) {
-                sb.append(numArray[0] + findInt % 10).append(" + ");
-                sb.append(numArray[1] + (findInt / 10)*10).append(" = ").append(numArray[2]);
-            }
-            else {
-                sb.append(numArray[1] + findInt % 10).append(" + ");
-                sb.append(numArray[0] + (findInt / 10)*10).append(" = ").append(numArray[2]);
-            }
-            return String.valueOf(sb);
-        }
-    }
-
-    public static boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        }
-        catch (Exception e) {
-            return false;
-        }
+        // Иначе решения нет
+        return "No solution";
     }
 
     public static String getDataFromFile(String path) {
