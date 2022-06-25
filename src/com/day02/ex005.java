@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ex005 {
     public static void main(String[] args) {
