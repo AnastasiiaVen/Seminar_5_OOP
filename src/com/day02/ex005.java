@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 public class ex005 {
     public static void main(String[] args) {
@@ -26,11 +26,10 @@ public class ex005 {
     }
 
     public static String getSolution(@NotNull String str) {
-        ArrayList<String> list = new ArrayList<>();
         // Формируем список. Разделитель - пробел, "+" и "=" исключаем
-        for (String line : str.split(" ")) {
-            if (!Objects.equals(line, "+") && !Objects.equals(line, "=")) list.add(line);
-        }
+        ArrayList<String> list = new ArrayList<>(List.of(str.split(" ")));
+        list.remove("+");
+        list.remove("=");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 // Заменяем "?" в цикле от 0 до 9, сравниваем с результатом выражения
