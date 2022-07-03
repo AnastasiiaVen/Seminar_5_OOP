@@ -24,7 +24,7 @@ public class ex007 {
         }
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                // По заданным номерам индексам строк и столбцов находим диагонали
+                // По заданным индексам строк и столбцов находим диагонали
                 int[] tempDiagonals = setDiagonals(i, j);
                 // Если позиция свободна, устанавливаем фигуру
                 if (positionIsEmpty(i, j, tempDiagonals[0], tempDiagonals[1], positions)) {
