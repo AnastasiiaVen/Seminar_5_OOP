@@ -18,7 +18,8 @@ public class ex010 {
         String postfixString = getPostfix(initString);
         System.out.println(postfixString);
         System.out.println("Calculation result:");
-        System.out.println(getResult(postfixString));
+        if (!postfixString.equals("No result")) System.out.println(getResult(postfixString));
+        else System.out.println("No result");
     }
 
     public static @NotNull String getPostfix(String inputString) {
@@ -69,6 +70,8 @@ public class ex010 {
                     // По умолчанию ожидаем число. Если проверка возвращает истину,
                     // записываем число в строку
                     if (isNumeric(i)) resultSb.append(i).append(" ");
+                    // При некорректно заданном выражении
+                    else return "No result";
                 }
             }
         }
@@ -90,7 +93,7 @@ public class ex010 {
         String[] postfixArray = postfixString.split(" ");
         for (String i : postfixArray) {
             // Если число, размещаем в стек операндов
-            if(isNumeric(i)) operandsStack.push(Integer.parseInt(i));
+            if (isNumeric(i)) operandsStack.push(Integer.parseInt(i));
             else {
                 // Берем из стека два верхних операнда
                 int y = operandsStack.pop();
