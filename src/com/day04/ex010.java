@@ -11,18 +11,21 @@ import java.util.ArrayDeque;
 
 public class ex010 {
     public static void main(String[] args) {
+        // Строка с инфиксной записью
         String initString = "3/3+2*(14-12)^3";
         System.out.println("Infix notation:");
         System.out.println(initString);
         System.out.println("Postfix notation:");
+        // Перевод в постфиксную запись
         String postfixString = getPostfix(initString);
         System.out.println(postfixString);
         System.out.println("Calculation result:");
+        // Вычисляем запись
         if (!postfixString.equals("No result")) System.out.println(getResult(postfixString));
         else System.out.println("No result");
     }
 
-    public static @NotNull String getPostfix(String inputString) {
+    public static @NotNull String getPostfix(@NotNull String inputString) {
         // Разбиваем строку. Результат: [3, /, 3, +, 2, *, (, 14, -, 12, ), ^, 3]
         String[] stringArray = inputString.split("(?<=[-+*/^()])|(?=[-+*/^()])");
         // StringBuilder для формирования постфиксной записи
@@ -80,14 +83,14 @@ public class ex010 {
         return resultSb.toString().trim();
     }
 
-    public static boolean isNumeric(String checkString) {
+    public static boolean isNumeric(@NotNull String checkString) {
         for (char c : checkString.toCharArray()) {
             if (!Character.isDigit(c)) return false;
         }
         return true;
     }
 
-    public static Integer getResult(String postfixString) {
+    public static @NotNull Integer getResult(@NotNull String postfixString) {
         // Стек для операндов
         ArrayDeque<Integer> operandsStack = new ArrayDeque<>();
         String[] postfixArray = postfixString.split(" ");
