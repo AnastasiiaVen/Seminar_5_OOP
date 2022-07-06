@@ -25,14 +25,15 @@ public class ex012 {
                 "{a+]}{(d*3)}"
         };
         for (String i : initStrings) {
-            System.out.printf("Bracket placement is correct? %s - %s\n",
-                    i, bracketsIsCorrect(i));
+            System.out.printf("Bracket placement is correct? %s - %s\n", i, bracketsIsCorrect(i));
         }
     }
 
     public static boolean bracketsIsCorrect(@NotNull String expression) {
+        // Разбиваем строку на char-ы
         char[] expressionArray = expression.toCharArray();
         ArrayDeque<Character> brackets = new ArrayDeque<>();
+        // Словарь для скобок
         HashMap<Character, Character> bracketsMap = new HashMap<>();
         bracketsMap.put(')', '(');
         bracketsMap.put('>', '<');
@@ -40,12 +41,16 @@ public class ex012 {
         bracketsMap.put('}', '{');
         for (char i : expressionArray) {
             switch (i) {
+                // Открывающие скобки заносим в стек
                 case '(', '<', '[', '{' -> brackets.push(i);
+                // Закрывающие скобки проверяем на соответствие пары ключ - значение словаря
+                // При несоответствии или пустом стеке - выражение не правильно
                 case ')', '>', ']', '}' -> {
                     if (brackets.peek() == null || bracketsMap.get(i) != brackets.pop()) return false;
                 }
             }
         }
+        // Если в конце стек не пуст, также выражение не правильною Иначе true
         return brackets.peek() == null;
     }
 }
