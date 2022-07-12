@@ -16,7 +16,7 @@ package com.day05;
 
 import java.util.*;
 
-public class ex020 {
+public class Roman {
 
     public static HashMap<Integer, Character> romanCharMap = new HashMap<>();
 
