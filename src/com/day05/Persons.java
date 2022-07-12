@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 public class Persons {
 
+    // HashMap int - номер паспорта, Person - данные по сотруднику
     public static HashMap<Integer, Person> persons = new HashMap<>();
 
     public static void main(String[] args) {
@@ -37,18 +38,20 @@ public class Persons {
     }
 
     public static void sameSurname() {
-        HashMap<String, ArrayList<Integer>> sameSurnames = new HashMap<>();
+        // HashMap для фамилий. Ключ - фамилия, значение - список номеров паспортов
+        HashMap<String, ArrayList<Integer>> surnameList = new HashMap<>();
         persons.forEach((key, value) -> {
-            if (!sameSurnames.containsKey(value.surname)) {
-                sameSurnames.put(value.surname, new ArrayList<>());
-                sameSurnames.get(value.surname).add(key);
-            } else {
-                sameSurnames.get(value.surname).add(key);
-            }
+            // Для каждого сотрудника если фамилия не присутствует в HashMap-е, заносим ключем и
+            // добавляем в список номер паспорта.
+            if (!surnameList.containsKey(value.surname)) surnameList.put(value.surname, new ArrayList<>());
+            surnameList.get(value.surname).add(key);
         });
         System.out.println("Persons with the same surname:");
-        sameSurnames.forEach((key, value) -> {
-            if (sameSurnames.get(key).size() > 1) {
+        // Для всех пар
+        surnameList.forEach((key, value) -> {
+            // если размер значения (списка) более 1 (есть однофамильцы)
+            if (surnameList.get(key).size() > 1) {
+                // для всех номеров паспортов вывод данных
                 for (int i : value) {
                     System.out.printf("Passport #%d %s %s - %d years old\n", i,
                             persons.get(i).name, persons.get(i).surname, persons.get(i).getAge());
@@ -59,6 +62,7 @@ public class Persons {
 
     public static void overAge(int age) {
         System.out.printf("Over than %d years old:\n", age);
+        // Для всех сотрудников в persons с возрастом > age, вывод данных
         persons.forEach((key, value) -> {
             if (value.getAge() > age) {
                 System.out.printf("Passport #%d %s %s - %d years old\n", key,
@@ -80,10 +84,13 @@ public class Persons {
 
         int getAge() {
             try {
+                // Формат сторки с датой рождения
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date tempDate = formatter.parse(birthDay);
+                Date dateOfBirth = formatter.parse(birthDay);
+                // Текущая дата
                 Date dateNow = new Date();
-                return (int) ((dateNow.getTime() - tempDate.getTime()) / (1000L * 60 * 60 * 24 * 365));
+                // Возвращаем возраст в годах
+                return (int) ((dateNow.getTime() - dateOfBirth.getTime()) / (1000L * 60 * 60 * 24 * 365));
             } catch (Exception exception) {
                 System.out.println("Wrong birthday record");
                 return 0;
