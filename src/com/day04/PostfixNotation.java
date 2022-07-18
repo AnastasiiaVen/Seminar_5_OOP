@@ -1,18 +1,19 @@
 package com.day04;
 
 /*
-    Реализовать алгоритм перевода из инфиксной записи в постфиксную для арифметического выражения.
-    Вычислить запись если это возможно
+    Написать программу вычисляющую значение сложного арифметического выражения.
+    Для простоты - выражение всегда вычисляемое
+    Пример: (2^3 * (10 / (5 - 3)))^(Sin(Pi)) ответ - 1
  */
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 
-public class ex010 {
+public class PostfixNotation {
     public static void main(String[] args) {
         // Строка с инфиксной записью
-        String initString = "3/3+2*(14-12)^3";
+        String initString = "(2^3*(10/(5-3)))^(Sin(Pi))";
         System.out.println("Infix notation:");
         System.out.println(initString);
         System.out.println("Postfix notation:");
@@ -21,12 +22,12 @@ public class ex010 {
         System.out.println(postfixString);
         System.out.println("Calculation result:");
         // Вычисляем запись
-        if (!postfixString.equals("No result")) System.out.println(getResult(postfixString));
+        if (!postfixString.equals("No result")) System.out.printf("%f", getResult(postfixString));
         else System.out.println("No result");
     }
 
     public static @NotNull String getPostfix(@NotNull String inputString) {
-        // Разбиваем строку. Результат: [3, /, 3, +, 2, *, (, 14, -, 12, ), ^, 3]
+        // Разбиваем строку. Результат: [(, 2, ^, 3 , *, (, 10, /, (, 5, -, 3, ), ), ), ^, (, Sin, (, Pi, ), )]
         String[] stringArray = inputString.split("(?<=[-+*/^()])|(?=[-+*/^()])");
         // StringBuilder для формирования постфиксной записи
         StringBuilder resultSb = new StringBuilder();
@@ -56,9 +57,9 @@ public class ex010 {
                     }
                     operatorsStack.push(i);
                 }
-                // "^" максимальный приоритет, заносим в стек
+                // "^", "Sin", "Cos" максимальный приоритет, заносим в стек
                 // Открывающую скобку заносим в стек
-                case "^", "(" -> operatorsStack.push(i);
+                case "^", "Sin", "Cos", "(" -> operatorsStack.push(i);
                 case ")" -> {
                     // Переносим все операторы из стека в строку до появления открывающей скобки.
                     // Открывающую скобку удаляем из стека
@@ -69,6 +70,8 @@ public class ex010 {
                     }
                     operatorsStack.pop();
                 }
+                // Pi заносим в строку как double
+                case "Pi" -> resultSb.append(Math.PI).append(" ");
                 default -> {
                     // По умолчанию ожидаем число. Если проверка возвращает истину,
                     // записываем число в строку
@@ -84,31 +87,41 @@ public class ex010 {
     }
 
     public static boolean isNumeric(@NotNull String checkString) {
-        for (char c : checkString.toCharArray()) {
-            if (!Character.isDigit(c)) return false;
+        try {
+            Double.parseDouble(checkString);
+        } catch (Exception e) {
+            return false;
         }
         return true;
     }
 
-    public static @NotNull Integer getResult(@NotNull String postfixString) {
+    public static @NotNull Double getResult(@NotNull String postfixString) {
         // Стек для операндов
-        ArrayDeque<Integer> operandsStack = new ArrayDeque<>();
+        ArrayDeque<Double> operandsStack = new ArrayDeque<>();
         String[] postfixArray = postfixString.split(" ");
         for (String i : postfixArray) {
             // Если число, размещаем в стек операндов
-            if (isNumeric(i)) operandsStack.push(Integer.parseInt(i));
+            if (isNumeric(i)) operandsStack.push(Double.parseDouble(i));
             else {
-                // Берем из стека два верхних операнда
-                int y = operandsStack.pop();
-                int x = operandsStack.pop();
-                int tempResult = 0;
+                double x = 0;
+                double y = 0;
+                double tempResult = 0;
+                // Для sin, cos из стека берем один операнд
+                if (i.equals("Sin") || i.equals("Cos")) x = operandsStack.pop();
+                // для всех других операторов берем из стека два верхних операнда
+                else {
+                    y = operandsStack.pop();
+                    x = operandsStack.pop();
+                }
                 // Производим действие
                 switch (i) {
                     case "+" -> tempResult = x + y;
                     case "-" -> tempResult = x - y;
                     case "*" -> tempResult = x * y;
                     case "/" -> tempResult = x / y;
-                    case "^" -> tempResult = (int) Math.pow(x, y);
+                    case "^" -> tempResult = Math.pow(x, y);
+                    case "Sin" -> tempResult = Math.sin(x);
+                    case "Cos" -> tempResult = Math.cos(x);
                 }
                 // Результат помещаем в стек
                 operandsStack.push(tempResult);
@@ -122,9 +135,9 @@ public class ex010 {
 /*
     Output:
     Infix notation:
-    3/3+2*(14-12)^3
+    (2^3*(10/(5-3)))^(Sin(Pi))
     Postfix notation:
-    3 3 / 2 14 12 - 3 ^ * +
+    2 3 ^ 10 5 3 - / * 3.141592653589793 Sin ^
     Calculation result:
-    17
+    1,000000
  */
