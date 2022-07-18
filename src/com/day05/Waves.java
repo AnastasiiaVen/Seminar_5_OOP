@@ -12,12 +12,18 @@ public class Waves {
     // HashMap где ключ - номнр шага от стартовой ячейки,
     // значение - список координат с одинаковым номером шага
     static Map<Integer, ArrayList<coordinates>> coordinatesMap = new HashMap<>();
-    // Массив с приращениями координат (движение вниз, вверх ...)
-    static int[][] moves = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    // Список с приращениями координат
+    static ArrayList<coordinates> moves = new ArrayList<>();
     static coordinates startPoint = new coordinates();
     static coordinates finishPoint = new coordinates();
 
     static {
+        // Заполняем список (движение вниз, вверх ...)
+        moves.add(new coordinates(0, 1));
+        moves.add(new coordinates(0, -1));
+        moves.add(new coordinates(1, 0));
+        moves.add(new coordinates(-1, 0));
+
         Random random = new Random();
         // Рандомно расставляем препятствия. На поле отмечаем их "-1"
         for (int i = 0; i < 40; i++) {
@@ -60,15 +66,15 @@ public class Waves {
         ArrayList<coordinates> temp = new ArrayList<>();
         // для всего списка координат по текущему ключу
         for (coordinates i : coordinatesMap.get(count)) {
-            for (int[] j : moves) {
+            for (coordinates m : moves) {
                 // Проверяем возможные движения
-                if (i.x + j[0] >= 0 && i.x + j[0] < field.length
-                        && i.y + j[1] >= 0 && i.y + j[1] < field[0].length
-                        && field[i.x + j[0]][i.y + j[1]] == 0) {
+                if (i.x + m.x >= 0 && i.x + m.x < field.length
+                        && i.y + m.y >= 0 && i.y + m.y < field[0].length
+                        && field[i.x + m.x][i.y + m.y] == 0) {
                     // При выполнении условий координаты заносим в список,
                     // на поле отмечаем как n+1
-                    temp.add(new coordinates(i.x + j[0], i.y + j[1]));
-                    field[i.x + j[0]][i.y + j[1]] = count + 1;
+                    temp.add(new coordinates(i.x + m.x, i.y + m.y));
+                    field[i.x + m.x][i.y + m.y] = count + 1;
                 }
             }
         }
@@ -85,13 +91,13 @@ public class Waves {
         if (count == 1) return path;
         // Для возможных вариантов перемещения проверяем условия:
         // координаты в пределах массива, значение следующей позиции на 1 меньше текущей
-        for (int[] i : moves) {
-            if (coordX + i[0] >= 0 && coordY + i[1] >= 0
-                    && coordX + i[0] < field.length && coordY + i[1] < field[0].length
-                    && field[coordX + i[0]][coordY + i[1]] == count - 1) {
+        for (coordinates m : moves) {
+            if (coordX + m.x >= 0 && coordY + m.y >= 0
+                    && coordX + m.x < field.length && coordY + m.y < field[0].length
+                    && field[coordX + m.x][coordY + m.y] == count - 1) {
                 // Вносим координаты в список, рекурсивно повторяем до 1 (стартовая точка)
-                path.add(new coordinates(coordX + i[0], coordY + i[1]));
-                return backTrace(path, coordX + i[0], coordY + i[1], count - 1);
+                path.add(new coordinates(coordX + m.x, coordY + m.y));
+                return backTrace(path, coordX + m.x, coordY + m.y, count - 1);
             }
         }
         return path;
