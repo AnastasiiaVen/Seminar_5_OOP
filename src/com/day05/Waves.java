@@ -9,7 +9,7 @@ import java.util.*;
 public class Waves {
     // Дискретное рабочее поле
     static int[][] field = new int[15][20];
-    // HashMap где ключ - номнр шага от стартовой ячейки,
+    // HashMap где ключ - номер шага от стартовой ячейки,
     // значение - список координат с одинаковым номером шага
     static Map<Integer, ArrayList<coordinates>> coordinatesMap = new HashMap<>();
     // Список с приращениями координат

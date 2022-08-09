@@ -34,7 +34,6 @@ public class Relationships {
         relationsList.add(new Relation(child, parent, RelType.CHILD));
     }
 
-    // Найти всех детей персоны
     public ArrayList<Person> findChildren(@NotNull Person parent) {
         ArrayList<Person> temp = new ArrayList<>();
         relationsList.forEach((rel) -> {
@@ -45,7 +44,6 @@ public class Relationships {
         return temp;
     }
 
-    // Найти родителей персоны
     public ArrayList<Person> findParents(@NotNull Person child) {
         ArrayList<Person> temp = new ArrayList<>();
         relationsList.forEach((rel) -> {
@@ -56,7 +54,6 @@ public class Relationships {
         return temp;
     }
 
-    // Найти сестер/братьев
     public ArrayList<Person> findBrothersSisters(Person person) {
         ArrayList<Person> temp = new ArrayList<>();
         // Находим родителей

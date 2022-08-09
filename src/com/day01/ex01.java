@@ -40,7 +40,7 @@ public class ex01 {
         2 ^ -3 = 0.125
      */
 
-    public static int @NotNull [] getDataFromFile(String path) {
+    public static int[] getDataFromFile(String path) {
         int[] fileData = new int[2];
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             // Построчно читаем содержимое файла, разделяем по " ", записываем значения в массив
