@@ -12,8 +12,8 @@ public class Relationships {
     private static class Relation extends RelatedPersons {
         private final RelType relation;
 
-        private Relation(Person first_person, Person second_person, RelType relation) {
-            super(first_person, second_person);
+        private Relation(Pers first_pers, Pers second_pers, RelType relation) {
+            super(first_pers, second_pers);
             this.relation = relation;
         }
 
@@ -22,50 +22,50 @@ public class Relationships {
         @Override
         public String toString() {
             return String.format("Person %s %s is %s for %s %s",
-                    first_person.getFirst_name(), first_person.getLast_name(),
+                    first_pers.getFirst_name(), first_pers.getLast_name(),
                     relation.toString(),
-                    second_person.getFirst_name(), second_person.getLast_name());
+                    second_pers.getFirst_name(), second_pers.getLast_name());
         }
     }
 
-    public void addRelation(Person parent, Person child) {
+    public void addRelation(Pers parent, Pers child) {
         // Добавляем две связи между персонами предок-потомок, потомок-предок
         relationsList.add(new Relation(parent, child, RelType.PARENT));
         relationsList.add(new Relation(child, parent, RelType.CHILD));
     }
 
-    public ArrayList<Person> findChildren(@NotNull Person parent) {
-        ArrayList<Person> temp = new ArrayList<>();
+    public ArrayList<Pers> findChildren(@NotNull Pers parent) {
+        ArrayList<Pers> temp = new ArrayList<>();
         relationsList.forEach((rel) -> {
-            if (parent.equals(rel.first_person)) {
-                temp.add(rel.second_person);
+            if (parent.equals(rel.first_pers)) {
+                temp.add(rel.second_pers);
             }
         });
         return temp;
     }
 
-    public ArrayList<Person> findParents(@NotNull Person child) {
-        ArrayList<Person> temp = new ArrayList<>();
+    public ArrayList<Pers> findParents(@NotNull Pers child) {
+        ArrayList<Pers> temp = new ArrayList<>();
         relationsList.forEach((rel) -> {
-            if (child.equals(rel.second_person)) {
-                temp.add(rel.first_person);
+            if (child.equals(rel.second_pers)) {
+                temp.add(rel.first_pers);
             }
         });
         return temp;
     }
 
-    public ArrayList<Person> findBrothersSisters(Person person) {
-        ArrayList<Person> temp = new ArrayList<>();
+    public ArrayList<Pers> findBrothersSisters(Pers pers) {
+        ArrayList<Pers> temp = new ArrayList<>();
         // Находим родителей
-        ArrayList<Person> parents = findParents(person);
+        ArrayList<Pers> parents = findParents(pers);
         relationsList.forEach((rel) -> {
             // Если имя/фамилия родителя совпадают
-            if (parents.get(0).getFirst_name().equals(rel.first_person.getFirst_name()) &&
-                    parents.get(0).getLast_name().equals(rel.first_person.getLast_name()) &&
+            if (parents.get(0).getFirst_name().equals(rel.first_pers.getFirst_name()) &&
+                    parents.get(0).getLast_name().equals(rel.first_pers.getLast_name()) &&
                     // но это не он сам
-                    !person.getFirst_name().equals(rel.second_person.getFirst_name()) &&
-                    !person.getLast_name().equals(rel.second_person.getLast_name())) {
-                temp.add(rel.second_person);
+                    !pers.getFirst_name().equals(rel.second_pers.getFirst_name()) &&
+                    !pers.getLast_name().equals(rel.second_pers.getLast_name())) {
+                temp.add(rel.second_pers);
             }
         });
         return temp;

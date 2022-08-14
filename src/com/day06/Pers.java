@@ -1,13 +1,13 @@
 package com.day06;
 
-public class Person {
+public class Pers {
 
     private int age;
     private String first_name;
     private String last_name;
 
 
-    Person(String first_name, String last_name, int age) {
+    Pers(String first_name, String last_name, int age) {
         this.age = age;
         this.first_name = first_name;
         this.last_name = last_name;

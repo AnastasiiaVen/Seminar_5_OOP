@@ -3,15 +3,15 @@ package com.day06;
 
 public class Family_tree {
     public static void main(String[] args) {
-        Person grandPa = new Person("Ivan", "Ivanov", 65);
-        Person grandMom = new Person("Xenia", "Onatopp", 65);
-        Person parent_01 = new Person("Pyotr", "Ivanov", 35);
-        Person parent_02 = new Person("Ann", "Petrova", 36);
-        Person parent_03 = new Person("Olga", "Ivanova", 37);
-        Person parent_04 = new Person("Vasily", "Sidorov", 38);
-        Person child_01 = new Person("Sergey", "Ivanov", 12);
-        Person child_02 = new Person("Mary", "Ivanova", 13);
-        Person child_03 = new Person("Semyon", "Sidorov", 14);
+        Pers grandPa = new Pers("Ivan", "Ivanov", 65);
+        Pers grandMom = new Pers("Xenia", "Onatopp", 65);
+        Pers parent_01 = new Pers("Pyotr", "Ivanov", 35);
+        Pers parent_02 = new Pers("Ann", "Petrova", 36);
+        Pers parent_03 = new Pers("Olga", "Ivanova", 37);
+        Pers parent_04 = new Pers("Vasily", "Sidorov", 38);
+        Pers child_01 = new Pers("Sergey", "Ivanov", 12);
+        Pers child_02 = new Pers("Mary", "Ivanova", 13);
+        Pers child_03 = new Pers("Semyon", "Sidorov", 14);
 
         Relationships familyRelations = new Relationships();
         // При вызове addRelation указываем только связь предок-потомок
@@ -37,8 +37,8 @@ public class Family_tree {
                 System.out.printf("%s %s\n", parent.getFirst_name(), parent.getLast_name()));
         // Находим сестер/братьев Петра Иванова
         System.out.printf("%s %s's sisters/brothers:\n", parent_01.getFirst_name(), parent_01.getLast_name());
-        familyRelations.findBrothersSisters(parent_01).forEach((person) ->
-                System.out.printf("%s %s\n", person.getFirst_name(), person.getLast_name()));
+        familyRelations.findBrothersSisters(parent_01).forEach((pers) ->
+                System.out.printf("%s %s\n", pers.getFirst_name(), pers.getLast_name()));
     }
 }
 
