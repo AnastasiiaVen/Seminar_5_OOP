@@ -8,6 +8,8 @@ public class FamilyTree {
         FillFamily.fillPersons(family, "src/com/day09/persons.txt");
         FillFamily.fillRelations(family, "src/com/day09/relations.txt");
 
+        System.out.println("-----------------------");
+        System.out.println("Persons sorted by age:");
         family.getFamily().stream().sorted(new HumanComparator()).forEach(System.out::println);
 
         Research research = new Research();
@@ -29,6 +31,8 @@ public class FamilyTree {
 
 /*
     Output:
+    -----------------------
+    Persons sorted by age:
     Name: Sergey, surname: Ivanov, age: 12
     Name: Mary, surname: Ivanova, age: 13
     Name: Semyon, surname: Sidorov, age: 14
